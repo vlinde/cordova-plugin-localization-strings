@@ -124,9 +124,15 @@ module.exports = function(context) {
                         }
                     }
 
+                    if (_.has(langJson, "app_ios")) {
+                        var localizableIosStringsJson = langJson.app_ios;
+                        if (!_.isEmpty(localizableIosStringsJson)) {
+                            writeStringFile(localizableIosStringsJson, localeLang, "Localizable.strings");
+                            localizableStringsPaths.push(localeLang + ".lproj/" + "Localizable.strings");
+                        }
+                    }
                     //remove APP_NAME and write to Localizable.strings
                     if (_.has(langJson, "app")) {
-                        //do processing for appname into plist
                         var localizableStringsJson = langJson.app;
                         if (!_.isEmpty(localizableStringsJson)) {
                             writeStringFile(localizableStringsJson, localeLang, "Localizable.strings");
