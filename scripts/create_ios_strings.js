@@ -124,21 +124,22 @@ module.exports = function(context) {
                         }
                     }
 
-                    if (_.has(langJson, "app_ios")) {
-                        var localizableIosStringsJson = langJson.app_ios;
-                        if (!_.isEmpty(localizableIosStringsJson)) {
-                            writeStringFile(localizableIosStringsJson, localeLang, "Localizable.strings");
-                            localizableStringsPaths.push(localeLang + ".lproj/" + "Localizable.strings");
+                    if (_.has(langJson, "app_ios") || _.has(langJson, "app")) {
+                        var localizableStringsJson = null;
+                        if (_.has(langJson, "app_ios") && _.has(langJson, "app")) {
+                            localizableStringsJson = _.assignIn(langJson.app_ios, langJson.app);
+                        } else if (_.has(langJson, "app_ios")) {
+                            localizableIosStringsJson = langJson.app_ios;
+                        } else if (_.has(langJson, "app")) {
+                            localizableStringsJson = langJson.app;
                         }
-                    }
-                    //remove APP_NAME and write to Localizable.strings
-                    if (_.has(langJson, "app")) {
-                        var localizableStringsJson = langJson.app;
+
                         if (!_.isEmpty(localizableStringsJson)) {
                             writeStringFile(localizableStringsJson, localeLang, "Localizable.strings");
                             localizableStringsPaths.push(localeLang + ".lproj/" + "Localizable.strings");
                         }
                     }
+
                 });
 
             });
